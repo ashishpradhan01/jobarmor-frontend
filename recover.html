@@ -333,7 +333,7 @@
         async function verifyOTP() {
             const otp = document.getElementById('input-otp').value.trim();
             if (!otp || otp.length !== 8) {
-                showError('otp', 'Please enter the 6-digit OTP.');
+                showError('otp', 'Please enter the 8-digit OTP.');
                 return;
             }
 
