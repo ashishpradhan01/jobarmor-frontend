@@ -214,10 +214,10 @@
                 </div>
 
                 <label class="block text-sm font-medium mb-2">Enter OTP</label>
-                <p class="text-text-muted text-xs mb-3">We sent a 6-digit code to <span id="display-email"
+                <p class="text-text-muted text-xs mb-3">We sent a 8-digit code to <span id="display-email"
                         class="text-accent-success"></span></p>
 
-                <input type="text" id="input-otp" placeholder="123456" maxlength="6"
+                <input type="text" id="input-otp" placeholder="12345678" maxlength="8"
                     class="input-field w-full px-4 py-3 rounded-lg text-text-primary text-center text-2xl tracking-widest mb-4">
 
                 <div id="error-otp"
@@ -332,7 +332,7 @@
 
         async function verifyOTP() {
             const otp = document.getElementById('input-otp').value.trim();
-            if (!otp || otp.length !== 6) {
+            if (!otp || otp.length !== 8) {
                 showError('otp', 'Please enter the 6-digit OTP.');
                 return;
             }

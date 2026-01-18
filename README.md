@@ -53,10 +53,10 @@ netlify deploy --prod
 ## 🔗 URL Structure
 
 ```
-https://jobarmor.work/                    → Home
-https://jobarmor.work/upgrade.html?uuid=xxx    → Payment (from extension)
-https://jobarmor.work/recover.html?uuid=xxx    → Recovery (from extension)
-https://jobarmor.work/help                → Help & Privacy
+https://www.jobarmor.work/                    → Home
+https://www.jobarmor.work/upgrade.html?uuid=xxx    → Payment (from extension)
+https://www.jobarmor.work/recover.html?uuid=xxx    → Recovery (from extension)
+https://www.jobarmor.work/help                → Help & Privacy
 ```
 
 ## 📱 Responsive
