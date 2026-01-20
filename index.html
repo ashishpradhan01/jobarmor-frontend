@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobArmor — AI-Powered Job Research for Smarter Decisions</title>
     <meta name="description"
-        content="Research companies before you apply. Get AI-powered insights on company stability, culture, and red flags directly on LinkedIn.">
+        content="Research companies and spot scam jobs before you apply. Get AI-powered insights on company stability, culture, and red flags directly on LinkedIn.">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -55,6 +55,19 @@
             background: var(--bg-primary);
         }
 
+        .dot-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1.5px, transparent 1.5px);
+            background-size: 25px 25px;
+            pointer-events: none;
+            z-index: 9998;
+            transition: background-position 0.1s ease-out;
+        }
+
         .glass-card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
@@ -71,6 +84,33 @@
         .btn-primary {
             background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            opacity: 0.5;
+            filter: blur(15px);
+            z-index: -1;
+            animation: ctaPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ctaPulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(1.05);
+            }
         }
 
         .btn-primary:hover {
@@ -101,14 +141,109 @@
             background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
             pointer-events: none;
         }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .showcase-img {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0));
+        }
+
+        .showcase-img:hover {
+            transform: scale(1.02) rotateY(-2deg) rotateX(2deg);
+            filter: drop-shadow(0 20px 50px rgba(16, 185, 129, 0.2));
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .stagger-card:hover {
+            transform: scale(1.03) translateY(-10px);
+            z-index: 10;
+        }
+
+        .gallery-gradient {
+            background: linear-gradient(180deg, #0D0D0D 0%, transparent 15%, transparent 85%, #0D0D0D 100%),
+                radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.05), transparent 40%);
+        }
+
+        .section-divider {
+            height: 151px;
+            background: linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.02));
+            pointer-events: none;
+        }
+
+        /* Cursor Glow Trail */
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        body:hover .cursor-glow {
+            opacity: 1;
+        }
+
+        /* Card Tilt */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Magnetic Button */
+        .magnetic-btn {
+            transition: transform 0.2s ease-out;
+        }
     </style>
 </head>
 
 <body class="font-sans text-text-primary antialiased">
 
+    <!-- Dot Pattern -->
+    <div class="dot-pattern" id="dot-pattern"></div>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass-card border-t-0 border-l-0 border-r-0">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <nav class="fixed top-4 left-4 right-4 z-50 glass-card rounded-2xl mx-auto max-w-6xl">
+        <div class="px-6">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center gap-2">
@@ -145,6 +280,10 @@
         <!-- Background Glow -->
         <div class="hero-glow top-1/4 left-1/2 -translate-x-1/2"></div>
 
+        <!-- Ultra-Smooth Bottom Fade -->
+        <div class="absolute bottom-0 left-0 right-0 h-[40rem] bg-gradient-to-t from-bg-primary pointer-events-none">
+        </div>
+
         <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
             <!-- Badge -->
             <div
@@ -159,7 +298,7 @@
 
             <!-- Headline -->
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
-                Research Companies<br>
+                Research Companies <br> & Spot Scams<br>
                 <span class="gradient-text">Before You Apply</span>
             </h1>
 
@@ -226,9 +365,63 @@
         </div>
     </section>
 
+    <!-- Problem-First Section -->
+    <section class="py-16 px-4 relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-8">Did You <span class="gradient-text">Know?</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card rounded-xl p-6">
+                    <div class="text-4xl font-bold text-accent-danger mb-2">1 in 5</div>
+                    <p class="text-text-secondary text-sm">LinkedIn job posts are ghost jobs or scams</p>
+                </div>
+                <div class="glass-card rounded-xl p-6">
+                    <div class="text-4xl font-bold text-accent-warning mb-2">2-3 hrs</div>
+                    <p class="text-text-secondary text-sm">Average time wasted on a fake job application</p>
+                </div>
+                <div class="glass-card rounded-xl p-6">
+                    <div class="text-4xl font-bold text-accent-success mb-2">30 min</div>
+                    <p class="text-text-secondary text-sm">Saved per job with JobArmor's instant research</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Stats Counter -->
+    <section class="py-16 px-4 relative">
+        <div class="max-w-4xl mx-auto">
+            <div
+                class="glass-card rounded-2xl p-8 flex flex-col md:flex-row items-center justify-around gap-8 text-center">
+                <div>
+                    <div class="text-4xl sm:text-5xl font-bold gradient-text counter" data-target="10247">0</div>
+                    <p class="text-text-secondary mt-2">Scam Jobs Detected</p>
+                </div>
+                <div class="hidden md:block w-px h-16 bg-border-color"></div>
+                <div>
+                    <div class="text-4xl sm:text-5xl font-bold gradient-text counter" data-target="500">0</div>
+                    <p class="text-text-secondary mt-2">Users Protected</p>
+                </div>
+                <div class="hidden md:block w-px h-16 bg-border-color"></div>
+                <div>
+                    <div class="text-4xl sm:text-5xl font-bold gradient-text counter" data-target="1250">0</div>
+                    <p class="text-text-secondary mt-2">Hours Saved</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
-    <section id="features" class="py-24 px-4">
-        <div class="max-w-6xl mx-auto">
+    <section id="features" class="px-4 relative bg-bg-primary">
+        <!-- Top Curtain from Hero -->
+        <div
+            class="absolute top-0 left-0 right-0 h-[40rem] bg-gradient-to-b from-bg-primary via-bg-primary/80 to-transparent z-20 pointer-events-none">
+        </div>
+
+        <!-- Bottom Curtain for Showcase -->
+        <div
+            class="absolute bottom-0 left-0 right-0 h-[40rem] bg-gradient-to-t from-bg-primary via-bg-primary/80 to-transparent z-20 pointer-events-none">
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-30 py-24">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold mb-4">
                     Everything You Need to <span class="gradient-text">Research Smart</span>
@@ -274,8 +467,8 @@
                         </svg>
                     </div>
                     <h3 class="text-lg font-semibold mb-2">Red Flag Alerts</h3>
-                    <p class="text-text-secondary text-sm">Spot warning signs from Glassdoor reviews, news articles, and
-                        employee sentiment.</p>
+                    <p class="text-text-secondary text-sm">Spot warning signs from Glassdoor reviews, news articles,
+                        employee sentiment and Scam Job post.</p>
                 </div>
 
                 <!-- Feature 4 -->
@@ -320,8 +513,175 @@
         </div>
     </section>
 
+    <!-- Showcase Section -->
+    <section id="showcase" class="py-24 px-4 bg-bg-primary overflow-hidden relative">
+        <!-- Top Curtain from Features -->
+        <div
+            class="absolute top-0 left-0 right-0 h-[40rem] bg-gradient-to-b from-bg-primary via-bg-primary/80 to-transparent z-20 pointer-events-none">
+        </div>
+
+        <!-- Bottom Curtain for Gallery -->
+        <div
+            class="absolute bottom-0 left-0 right-0 h-[40rem] bg-gradient-to-t from-bg-primary via-bg-primary/80 to-transparent z-20 pointer-events-none">
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-30">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                    See JobArmor <span class="gradient-text">In Action</span>
+                </h2>
+                <p class="text-text-secondary max-w-xl mx-auto">
+                    A powerful sidekick for your job hunt, integrated directly into your LinkedIn workflow.
+                </p>
+            </div>
+
+            <div class="space-y-32">
+                <!-- Showcase 1 -->
+                <div class="flex flex-col lg:flex-row items-center gap-12 reveal">
+                    <div class="flex-1 space-y-6">
+                        <div class="w-12 h-12 rounded-lg bg-accent-success/10 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-accent-success" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold">Deep Company Research</h3>
+                        <p class="text-text-secondary text-lg">
+                            Get a full audit of any company instantly. We analyze funding, stability, and recent layoffs
+                            so you don't waste time on risky roles.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-text-secondary">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent-success"></div>
+                                Stability & Growth tracking
+                            </li>
+                            <li class="flex items-center gap-3 text-text-secondary">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent-success"></div>
+                                Glassdoor & Levels.fyi integration
+                            </li>
+                            <li class="flex items-center gap-3 text-text-secondary">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent-success"></div>
+                                AI-summarized sentiment analysis
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex-1 relative group">
+                        <div
+                            class="absolute -inset-4 bg-accent-success/20 rounded-[2rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <img src="assets/showcase-1.png" alt="Company Research Showcase"
+                            class="showcase-img relative rounded-2xl border border-border-color shadow-2xl float-animation">
+                    </div>
+                </div>
+
+                <!-- Showcase 2 -->
+                <div class="flex flex-col lg:flex-row-reverse items-center gap-12 reveal">
+                    <div class="flex-1 space-y-6">
+                        <div class="w-12 h-12 rounded-lg bg-accent-danger/10 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-accent-danger" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold">Real-time Scam Detection</h3>
+                        <p class="text-text-secondary text-lg">
+                            Protect your data and time. Our AI scans job posts for malicious patterns like "WhatsApp
+                            CTAs" or suspicious personal emails.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-text-secondary">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent-danger"></div>
+                                Intent-based risk assessment
+                            </li>
+                            <li class="flex items-center gap-3 text-text-secondary">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent-danger"></div>
+                                Recruiter credibility checks
+                            </li>
+                            <li class="flex items-center gap-3 text-text-secondary">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent-danger"></div>
+                                Ghost job indicators
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex-1 relative group">
+                        <div
+                            class="absolute -inset-4 bg-accent-danger/20 rounded-[2rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <img src="assets/showcase-2.png" alt="Scam Detection Showcase"
+                            class="showcase-img relative rounded-2xl border border-border-color shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Gallery Section -->
+    <section id="features-gallery" class="py-24 px-4 relative gallery-gradient overflow-hidden">
+        <!-- Top Curtain from Showcase -->
+        <div
+            class="absolute top-0 left-0 right-0 h-[40rem] bg-gradient-to-b from-bg-primary via-bg-primary/80 to-transparent z-20 pointer-events-none">
+        </div>
+
+        <!-- Bottom Curtain for Pricing -->
+        <div
+            class="absolute bottom-0 left-0 right-0 h-[40rem] bg-gradient-to-t from-bg-primary via-bg-primary/80 to-transparent z-20 pointer-events-none">
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-30">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                    Master Your <span class="gradient-text">Career Tools</span>
+                </h2>
+                <p class="text-text-secondary max-w-xl mx-auto">
+                    Go beyond research. Use JobArmor to fit, prepare, and connect with your dream companies.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <!-- Interview Prep (Low) -->
+                <div class="reveal stagger-card space-y-4 md:mt-12">
+                    <div class="glass-card rounded-2xl p-4 border-accent-success/20 overflow-hidden">
+                        <img src="assets/interview_prep.png" alt="Interview Prep" class="w-full rounded-xl">
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-2">Interview Prep</h4>
+                        <p class="text-text-secondary text-sm">Targeted questions and behavioral strategy for every
+                            role.</p>
+                    </div>
+                </div>
+
+                <!-- Profile Fit (High) -->
+                <div class="reveal stagger-card space-y-4" style="transition-delay: 200ms;">
+                    <div
+                        class="glass-card rounded-2xl p-4 border-accent-info/20 shadow-2xl shadow-accent-info/5 overflow-hidden">
+                        <img src="assets/profile-fit.png" alt="Profile Fit" class="w-full rounded-xl">
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-2">Detailed Profile Fit</h4>
+                        <p class="text-text-secondary text-sm">See exactly how your stack aligns with the JD
+                            requirements.</p>
+                    </div>
+                </div>
+
+                <!-- Referral Messages (Medium) -->
+                <div class="reveal stagger-card space-y-4 md:mt-24" style="transition-delay: 400ms;">
+                    <div class="glass-card rounded-2xl p-4 border-accent-warning/20 overflow-hidden">
+                        <img src="assets/refferal-mgs.png" alt="Referral Messages" class="w-full rounded-xl">
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-2">Smart Referrals</h4>
+                        <p class="text-text-secondary text-sm">Personalized messages that referrer's actually want to
+                            see.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Pricing Section -->
-    <section class="py-24 px-4">
+    <section id="pricing" class="py-24 px-4 bg-bg-primary">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold mb-4">
@@ -353,7 +713,7 @@
                                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                     clip-rule="evenodd" />
                             </svg>
-                            Basic company research
+                            Company research
                         </li>
                         <li class="flex items-center gap-3 text-text-secondary">
                             <svg class="w-5 h-5 text-accent-success" fill="currentColor" viewBox="0 0 20 20">
@@ -363,11 +723,25 @@
                             </svg>
                             LinkedIn integration
                         </li>
+                        <li class="flex items-center gap-3 text-text-secondary">
+                            <svg class="w-5 h-5 text-accent-success" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Scam Post Detection
+                        </li>
                     </ul>
 
                     <a href="https://chrome.google.com/webstore" target="_blank"
                         class="btn-secondary block w-full py-3 rounded-lg font-semibold text-center">
                         Get Started
+                    </a>
+
+                    <!-- API Key Link -->
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                        class="block mt-4 text-xs text-center text-text-secondary hover:text-text-primary transition-colors">
+                        Get a free API key from Google AI Studio →
                     </a>
                 </div>
 
@@ -389,7 +763,7 @@
                                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                     clip-rule="evenodd" />
                             </svg>
-                            Unlimited AI research
+                            All Free Features
                         </li>
                         <li class="flex items-center gap-3 text-text-secondary">
                             <svg class="w-5 h-5 text-accent-success" fill="currentColor" viewBox="0 0 20 20">
@@ -449,11 +823,101 @@
                 </div>
 
                 <!-- Copyright -->
-                <p class="text-text-muted text-sm">© 2024 JobArmor. All rights reserved.</p>
+                <p class="text-text-muted text-sm">© 2026 JobArmor. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <script>
+        // Reveal on scroll logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        // Cursor Glow Trail
+        const cursorGlow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Dot Pattern Parallax
+        const dotPattern = document.getElementById('dot-pattern');
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            dotPattern.style.backgroundPosition = `${x}px ${y}px`;
+        });
+
+        // Card Tilt Effect (exclude nav)
+        document.querySelectorAll('.glass-card:not(nav), .feature-card').forEach(card => {
+            card.classList.add('tilt-card');
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // Magnetic Buttons
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+            btn.classList.add('magnetic-btn');
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000;
+                    const step = target / (duration / 16);
+                    let current = 0;
+                    const updateCounter = () => {
+                        current += step;
+                        if (current < target) {
+                            counter.textContent = Math.ceil(current).toLocaleString();
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.textContent = target.toLocaleString() + '+';
+                        }
+                    };
+                    updateCounter();
+                    counterObserver.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(counter => counterObserver.observe(counter));
+    </script>
 </body>
 
 </html>

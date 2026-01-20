@@ -43,15 +43,77 @@
             background: #0D0D0D;
         }
 
+        .dot-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1.5px, transparent 1.5px);
+            background-size: 25px 25px;
+            pointer-events: none;
+            z-index: 9998;
+            transition: background-position 0.1s ease-out;
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        body:hover .cursor-glow {
+            opacity: 1;
+        }
+
         .glass-card {
             background: rgba(26, 26, 26, 0.8);
             backdrop-filter: blur(10px);
             border: 1px solid #2A2A2A;
         }
 
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.1s ease-out;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            opacity: 0.5;
+            filter: blur(15px);
+            z-index: -1;
+            animation: ctaPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ctaPulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(1.05);
+            }
         }
 
         .btn-primary:hover {
@@ -63,6 +125,10 @@
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .magnetic-btn {
+            transition: transform 0.2s ease-out;
         }
 
         .input-field {
@@ -119,9 +185,15 @@
 
 <body class="font-sans text-text-primary antialiased min-h-screen">
 
+    <!-- Dot Pattern -->
+    <div class="dot-pattern" id="dot-pattern"></div>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass-card border-t-0 border-l-0 border-r-0">
-        <div class="max-w-6xl mx-auto px-4">
+    <nav class="fixed top-4 left-4 right-4 z-50 glass-card rounded-2xl mx-auto max-w-6xl">
+        <div class="px-6">
             <div class="flex items-center justify-between h-16">
                 <a href="index.html" class="flex items-center gap-2">
                     <div
@@ -373,6 +445,51 @@
             pricingCard.classList.add('hidden');
             successCard.classList.remove('hidden');
         }
+
+        // Cursor Glow Trail
+        const cursorGlow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Dot Pattern Parallax
+        const dotPattern = document.getElementById('dot-pattern');
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            dotPattern.style.backgroundPosition = `${x}px ${y}px`;
+        });
+
+        // Card Tilt Effect (exclude pricing card)
+        document.querySelectorAll('.glass-card:not(nav):not(#pricing-card):not(#error-no-uuid):not(#success-card)').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // Magnetic Buttons (exclude pay button)
+        document.querySelectorAll('.btn-primary:not(#pay-btn)').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
     </script>
 
 </body>
