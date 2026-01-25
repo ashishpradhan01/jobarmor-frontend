@@ -1,190 +1,202 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upgrade to Pro — JobArmor</title>
-    <meta name="description" content="Upgrade to JobArmor Pro for unlimited AI-powered research and premium features.">
+    <meta
+      name="description"
+      content="Upgrade to JobArmor Pro for unlimited AI-powered research and premium features."
+    />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-                    colors: {
-                        'bg-primary': '#0D0D0D',
-                        'bg-card': 'rgba(26, 26, 26, 0.8)',
-                        'bg-card-solid': '#1A1A1A',
-                        'border-color': '#2A2A2A',
-                        'border-hover': '#3A3A3A',
-                        'text-primary': '#FFFFFF',
-                        'text-secondary': '#B0B0B0',
-                        'text-muted': '#6B6B6B',
-                        'accent-success': '#10B981',
-                        'accent-success-dark': '#059669',
-                        'accent-danger': '#EF4444',
-                        'accent-warning': '#F59E0B',
-                    },
-                },
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
+            colors: {
+              "bg-primary": "#0D0D0D",
+              "bg-card": "rgba(26, 26, 26, 0.8)",
+              "bg-card-solid": "#1A1A1A",
+              "border-color": "#2A2A2A",
+              "border-hover": "#3A3A3A",
+              "text-primary": "#FFFFFF",
+              "text-secondary": "#B0B0B0",
+              "text-muted": "#6B6B6B",
+              "accent-success": "#10B981",
+              "accent-success-dark": "#059669",
+              "accent-danger": "#EF4444",
+              "accent-warning": "#F59E0B",
             },
-        }
+          },
+        },
+      };
     </script>
 
     <style>
-        body {
-            background: #0D0D0D;
+      body {
+        background: #0d0d0d;
+      }
+
+      .dot-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.06) 1.5px,
+          transparent 1.5px
+        );
+        background-size: 25px 25px;
+        pointer-events: none;
+        z-index: 9998;
+        transition: background-position 0.1s ease-out;
+      }
+
+      .cursor-glow {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(16, 185, 129, 0.08) 0%,
+          transparent 60%
+        );
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.3s ease;
+        opacity: 0;
+      }
+
+      body:hover .cursor-glow {
+        opacity: 1;
+      }
+
+      .glass-card {
+        background: rgba(26, 26, 26, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid #2a2a2a;
+      }
+
+      .tilt-card {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        transition: transform 0.1s ease-out;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        opacity: 0.5;
+        filter: blur(15px);
+        z-index: -1;
+        animation: ctaPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes ctaPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
         }
 
-        .dot-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1.5px, transparent 1.5px);
-            background-size: 25px 25px;
-            pointer-events: none;
-            z-index: 9998;
-            transition: background-position 0.1s ease-out;
+        50% {
+          opacity: 0.6;
+          transform: scale(1.05);
+        }
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .magnetic-btn {
+        transition: transform 0.2s ease-out;
+      }
+
+      .input-field {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        transition: border-color 0.2s;
+      }
+
+      .input-field:focus {
+        border-color: #10b981;
+        outline: none;
+      }
+
+      .success-glow {
+        box-shadow:
+          0 0 20px rgba(16, 185, 129, 0.2),
+          0 0 40px rgba(16, 185, 129, 0.1);
+      }
+
+      .loading-spinner {
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #fff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .success-animation {
+        animation: successPop 0.5s ease-out;
+      }
+
+      @keyframes successPop {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
         }
 
-        .cursor-glow {
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-            opacity: 0;
+        50% {
+          transform: scale(1.05);
         }
 
-        body:hover .cursor-glow {
-            opacity: 1;
+        100% {
+          transform: scale(1);
+          opacity: 1;
         }
-
-        .glass-card {
-            background: rgba(26, 26, 26, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid #2A2A2A;
-        }
-
-        .tilt-card {
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            transition: transform 0.1s ease-out;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            opacity: 0.5;
-            filter: blur(15px);
-            z-index: -1;
-            animation: ctaPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes ctaPulse {
-
-            0%,
-            100% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.6;
-                transform: scale(1.05);
-            }
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .magnetic-btn {
-            transition: transform 0.2s ease-out;
-        }
-
-        .input-field {
-            background: #1A1A1A;
-            border: 1px solid #2A2A2A;
-            transition: border-color 0.2s;
-        }
-
-        .input-field:focus {
-            border-color: #10B981;
-            outline: none;
-        }
-
-        .success-glow {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2), 0 0 40px rgba(16, 185, 129, 0.1);
-        }
-
-        .loading-spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #fff;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .success-animation {
-            animation: successPop 0.5s ease-out;
-        }
-
-        @keyframes successPop {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body class="font-sans text-text-primary antialiased min-h-screen">
-
+  <body class="font-sans text-text-primary antialiased min-h-screen">
     <!-- Dot Pattern -->
     <div class="dot-pattern" id="dot-pattern"></div>
 
@@ -192,306 +204,459 @@
     <div class="cursor-glow" id="cursor-glow"></div>
 
     <!-- Navigation -->
-    <nav class="fixed top-4 left-4 right-4 z-50 glass-card rounded-2xl mx-auto max-w-6xl">
-        <div class="px-6">
-            <div class="flex items-center justify-between h-16">
-                <a href="index.html" class="flex items-center gap-2">
-                    <div
-                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-success to-accent-success-dark flex items-center justify-center">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                        </svg>
-                    </div>
-                    <span class="font-bold text-lg">JobArmor</span>
-                </a>
-                <div class="hidden md:flex items-center gap-6">
-                    <a href="index.html" class="text-text-secondary hover:text-text-primary transition-colors">Home</a>
-                    <a href="upgrade.html" class="text-accent-success font-medium">Upgrade</a>
-                    <a href="recover.html"
-                        class="text-text-secondary hover:text-text-primary transition-colors">Recover</a>
-                    <a href="help.html" class="text-text-secondary hover:text-text-primary transition-colors">Help</a>
-                </div>
+    <nav
+      class="fixed top-4 left-4 right-4 z-50 glass-card rounded-2xl mx-auto max-w-6xl"
+    >
+      <div class="px-6">
+        <div class="flex items-center justify-between h-16">
+          <a href="index.html" class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-success to-accent-success-dark flex items-center justify-center"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                stroke-width="2.5"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
             </div>
+            <span class="font-bold text-lg">JobArmor</span>
+          </a>
+          <div class="hidden md:flex items-center gap-6">
+            <a
+              href="index.html"
+              class="text-text-secondary hover:text-text-primary transition-colors"
+              >Home</a
+            >
+            <a href="upgrade.html" class="text-accent-success font-medium"
+              >Upgrade</a
+            >
+            <a
+              href="recover.html"
+              class="text-text-secondary hover:text-text-primary transition-colors"
+              >Recover</a
+            >
+            <a
+              href="help.html"
+              class="text-text-secondary hover:text-text-primary transition-colors"
+              >Help</a
+            >
+          </div>
         </div>
+      </div>
     </nav>
 
-    <div class="min-h-screen flex flex-col items-center justify-center pt-16 px-4 py-12">
+    <div
+      class="min-h-screen flex flex-col items-center justify-center pt-16 px-4 py-12"
+    >
+      <!-- Error: No UUID -->
+      <div
+        id="error-no-uuid"
+        class="hidden glass-card rounded-xl p-8 max-w-md w-full text-center"
+      >
+        <div
+          class="w-16 h-16 mx-auto mb-4 rounded-full bg-accent-warning/20 flex items-center justify-center"
+        >
+          <svg
+            class="w-8 h-8 text-accent-warning"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+        </div>
+        <h2 class="text-xl font-semibold mb-2">Access Required</h2>
+        <p class="text-text-secondary mb-6">
+          Please open this page from the JobArmor extension to upgrade your
+          account.
+        </p>
+        <a
+          href="https://chromewebstore.google.com/detail/jobarmor-ai-career-assist/pcaccgjkeoaegkoibncgpmdbggbphmdb"
+          target="_blank"
+          class="inline-flex items-center gap-2 text-accent-success hover:underline"
+        >
+          <span>Get the Extension</span>
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            />
+          </svg>
+        </a>
+      </div>
 
-        <!-- Error: No UUID -->
-        <div id="error-no-uuid" class="hidden glass-card rounded-xl p-8 max-w-md w-full text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-accent-warning/20 flex items-center justify-center">
-                <svg class="w-8 h-8 text-accent-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-            </div>
-            <h2 class="text-xl font-semibold mb-2">Access Required</h2>
-            <p class="text-text-secondary mb-6">Please open this page from the JobArmor extension to upgrade your
-                account.</p>
-            <a href="https://chrome.google.com/webstore" target="_blank"
-                class="inline-flex items-center gap-2 text-accent-success hover:underline">
-                <span>Get the Extension</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-            </a>
+      <!-- Pricing Card -->
+      <div
+        id="pricing-card"
+        class="hidden glass-card rounded-xl p-8 max-w-md w-full success-glow"
+      >
+        <div class="text-center mb-6">
+          <div
+            class="inline-block px-3 py-1 rounded-full bg-accent-success/10 border border-accent-success/30 text-accent-success text-sm font-medium mb-4"
+          >
+            PRO MEMBERSHIP
+          </div>
+          <h1 class="text-3xl font-bold mb-2">JobArmor Pro</h1>
+          <div class="flex items-baseline justify-center gap-1">
+            <span class="text-5xl font-bold text-accent-success">₹299</span>
+            <span class="text-text-muted">/month</span>
+          </div>
         </div>
 
-        <!-- Pricing Card -->
-        <div id="pricing-card" class="hidden glass-card rounded-xl p-8 max-w-md w-full success-glow">
-            <div class="text-center mb-6">
-                <div
-                    class="inline-block px-3 py-1 rounded-full bg-accent-success/10 border border-accent-success/30 text-accent-success text-sm font-medium mb-4">
-                    PRO MEMBERSHIP
-                </div>
-                <h1 class="text-3xl font-bold mb-2">JobArmor Pro</h1>
-                <div class="flex items-baseline justify-center gap-1">
-                    <span class="text-5xl font-bold text-accent-success">₹299</span>
-                    <span class="text-text-muted">/month</span>
-                </div>
-            </div>
+        <ul class="space-y-3 mb-6">
+          <li class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 text-accent-success flex-shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-text-secondary text-sm"
+              >Unlimited AI-Powered Research</span
+            >
+          </li>
+          <li class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 text-accent-success flex-shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-text-secondary text-sm"
+              >Advanced Stability Insights</span
+            >
+          </li>
+          <li class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 text-accent-success flex-shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-text-secondary text-sm"
+              >Real-time News & Layoff Alerts</span
+            >
+          </li>
+          <li class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 text-accent-success flex-shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-text-secondary text-sm"
+              >Priority Customer Support</span
+            >
+          </li>
+        </ul>
 
-            <ul class="space-y-3 mb-6">
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-accent-success flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="text-text-secondary text-sm">Unlimited AI-Powered Research</span>
-                </li>
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-accent-success flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="text-text-secondary text-sm">Advanced Stability Insights</span>
-                </li>
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-accent-success flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="text-text-secondary text-sm">Real-time News & Layoff Alerts</span>
-                </li>
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-accent-success flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="text-text-secondary text-sm">Priority Customer Support</span>
-                </li>
-            </ul>
-
-            <!-- Email Input (BEFORE payment) -->
-            <div class="mb-6">
-                <label class="block text-sm font-medium mb-2">Email Address</label>
-                <p class="text-text-muted text-xs mb-2">Used for receipts & account recovery</p>
-                <input type="email" id="input-email" placeholder="you@example.com"
-                    class="input-field w-full px-4 py-3 rounded-lg text-text-primary">
-            </div>
-
-            <button id="pay-btn" onclick="initiatePayment()"
-                class="btn-primary w-full py-4 rounded-xl font-semibold text-lg text-white flex items-center justify-center gap-2">
-                <span id="btn-text">Subscribe Now</span>
-                <div id="btn-loader" class="loading-spinner hidden"></div>
-            </button>
-
-            <div id="error-message"
-                class="hidden mt-4 p-4 rounded-lg bg-accent-danger/10 border border-accent-danger/30 text-accent-danger text-center">
-                <p id="error-text">Something went wrong.</p>
-                <button onclick="initiatePayment()" class="mt-2 text-sm underline hover:opacity-80">Try Again</button>
-            </div>
-
-            <p class="text-text-muted text-xs text-center mt-6 flex items-center justify-center gap-1">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                Securely processed by Razorpay
-            </p>
+        <!-- Email Input (BEFORE payment) -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium mb-2">Email Address</label>
+          <p class="text-text-muted text-xs mb-2">
+            Used for receipts & account recovery
+          </p>
+          <input
+            type="email"
+            id="input-email"
+            placeholder="you@example.com"
+            class="input-field w-full px-4 py-3 rounded-lg text-text-primary"
+          />
         </div>
 
-        <!-- Success State -->
-        <div id="success-card" class="hidden glass-card rounded-xl p-8 max-w-md w-full text-center success-animation">
-            <div
-                class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-accent-success to-accent-success-dark flex items-center justify-center">
-                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                </svg>
-            </div>
-            <h2 class="text-2xl font-bold mb-2 text-accent-success">Welcome to Pro!</h2>
-            <p class="text-text-secondary mb-6">Your subscription is now active. Enjoy unlimited AI-powered research.
-            </p>
-            <a href="https://www.linkedin.com/jobs"
-                class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white">
-                <span>Return to LinkedIn</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-            </a>
+        <button
+          id="pay-btn"
+          onclick="initiatePayment()"
+          class="btn-primary w-full py-4 rounded-xl font-semibold text-lg text-white flex items-center justify-center gap-2"
+        >
+          <span id="btn-text">Subscribe Now</span>
+          <div id="btn-loader" class="loading-spinner hidden"></div>
+        </button>
+
+        <div
+          id="error-message"
+          class="hidden mt-4 p-4 rounded-lg bg-accent-danger/10 border border-accent-danger/30 text-accent-danger text-center"
+        >
+          <p id="error-text">Something went wrong.</p>
+          <button
+            onclick="initiatePayment()"
+            class="mt-2 text-sm underline hover:opacity-80"
+          >
+            Try Again
+          </button>
         </div>
 
+        <p
+          class="text-text-muted text-xs text-center mt-6 flex items-center justify-center gap-1"
+        >
+          <svg
+            class="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            />
+          </svg>
+          Securely processed by Razorpay
+        </p>
+      </div>
+
+      <!-- Success State -->
+      <div
+        id="success-card"
+        class="hidden glass-card rounded-xl p-8 max-w-md w-full text-center success-animation"
+      >
+        <div
+          class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-accent-success to-accent-success-dark flex items-center justify-center"
+        >
+          <svg
+            class="w-10 h-10 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="3"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold mb-2 text-accent-success">
+          Welcome to Pro!
+        </h2>
+        <p class="text-text-secondary mb-6">
+          Your subscription is now active. Enjoy unlimited AI-powered research.
+        </p>
+        <a
+          href="https://www.linkedin.com/jobs"
+          class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white"
+        >
+          <span>Return to LinkedIn</span>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            />
+          </svg>
+        </a>
+      </div>
     </div>
 
     <script>
-        // ========== Configuration ==========
-        // Production:
-        const CONFIG = { SUPABASE_URL: 'https://asfnjoigqbvfkoqbvnuv.supabase.co/functions/v1' };
+      // ========== Configuration ==========
+      // Production:
+      const CONFIG = {
+        SUPABASE_URL: "https://asfnjoigqbvfkoqbvnuv.supabase.co/functions/v1",
+      };
 
-        let extensionUUID = null;
+      let extensionUUID = null;
 
-        // DOM Elements
-        const errorNoUUID = document.getElementById('error-no-uuid');
-        const pricingCard = document.getElementById('pricing-card');
-        const successCard = document.getElementById('success-card');
-        const payBtn = document.getElementById('pay-btn');
-        const btnText = document.getElementById('btn-text');
-        const btnLoader = document.getElementById('btn-loader');
-        const errorMessage = document.getElementById('error-message');
-        const errorText = document.getElementById('error-text');
-        const inputEmail = document.getElementById('input-email');
+      // DOM Elements
+      const errorNoUUID = document.getElementById("error-no-uuid");
+      const pricingCard = document.getElementById("pricing-card");
+      const successCard = document.getElementById("success-card");
+      const payBtn = document.getElementById("pay-btn");
+      const btnText = document.getElementById("btn-text");
+      const btnLoader = document.getElementById("btn-loader");
+      const errorMessage = document.getElementById("error-message");
+      const errorText = document.getElementById("error-text");
+      const inputEmail = document.getElementById("input-email");
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            extensionUUID = urlParams.get('uuid');
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        extensionUUID = urlParams.get("uuid");
 
-            if (!extensionUUID) {
-                errorNoUUID.classList.remove('hidden');
-            } else {
-                pricingCard.classList.remove('hidden');
-            }
+        if (!extensionUUID) {
+          errorNoUUID.classList.remove("hidden");
+        } else {
+          pricingCard.classList.remove("hidden");
+        }
+      });
+
+      async function initiatePayment() {
+        if (!extensionUUID) return;
+
+        // Validate email
+        const email = inputEmail.value.trim();
+        if (!email || !isValidEmail(email)) {
+          showError("Please enter a valid email address.");
+          inputEmail.focus();
+          return;
+        }
+
+        setLoading(true);
+        hideError();
+
+        try {
+          const response = await fetch(`${CONFIG.SUPABASE_URL}/initiate-pay`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              uuid: extensionUUID,
+              email: email, // Send email to backend
+            }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok)
+            throw new Error(data.error || "Failed to initiate payment");
+          if (data.code === "ALREADY_PREMIUM") {
+            showSuccess();
+            return;
+          }
+
+          openRazorpayCheckout(data.subscription_id, data.razorpay_key, email);
+        } catch (error) {
+          showError(error.message || "Payment failed. Please try again.");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function openRazorpayCheckout(subscriptionId, razorpayKey, email) {
+        const rzp = new Razorpay({
+          key: razorpayKey,
+          subscription_id: subscriptionId,
+          name: "JobArmor",
+          description: "Pro Monthly Subscription",
+          prefill: {
+            email: email, // Pre-fill email in Razorpay
+          },
+          handler: () => showSuccess(),
+          theme: { color: "#10B981" },
+          notes: { extension_uuid: extensionUUID },
+        });
+        rzp.on("payment.failed", (res) =>
+          showError("Payment failed: " + res.error.description),
+        );
+        rzp.open();
+      }
+
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      function setLoading(loading) {
+        payBtn.disabled = loading;
+        btnText.textContent = loading ? "Processing..." : "Subscribe Now";
+        btnLoader.classList.toggle("hidden", !loading);
+      }
+
+      function showError(msg) {
+        errorText.textContent = msg;
+        errorMessage.classList.remove("hidden");
+      }
+
+      function hideError() {
+        errorMessage.classList.add("hidden");
+      }
+
+      function showSuccess() {
+        pricingCard.classList.add("hidden");
+        successCard.classList.remove("hidden");
+      }
+
+      // Cursor Glow Trail
+      const cursorGlow = document.getElementById("cursor-glow");
+      document.addEventListener("mousemove", (e) => {
+        cursorGlow.style.left = e.clientX + "px";
+        cursorGlow.style.top = e.clientY + "px";
+      });
+
+      // Dot Pattern Parallax
+      const dotPattern = document.getElementById("dot-pattern");
+      document.addEventListener("mousemove", (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        dotPattern.style.backgroundPosition = `${x}px ${y}px`;
+      });
+
+      // Card Tilt Effect (exclude pricing card)
+      document
+        .querySelectorAll(
+          ".glass-card:not(nav):not(#pricing-card):not(#error-no-uuid):not(#success-card)",
+        )
+        .forEach((card) => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 25;
+            const rotateY = (centerX - x) / 25;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
+          });
+          card.addEventListener("mouseleave", () => {
+            card.style.transform =
+              "perspective(1000px) rotateX(0) rotateY(0) scale(1)";
+          });
         });
 
-        async function initiatePayment() {
-            if (!extensionUUID) return;
-
-            // Validate email
-            const email = inputEmail.value.trim();
-            if (!email || !isValidEmail(email)) {
-                showError('Please enter a valid email address.');
-                inputEmail.focus();
-                return;
-            }
-
-            setLoading(true);
-            hideError();
-
-            try {
-                const response = await fetch(`${CONFIG.SUPABASE_URL}/initiate-pay`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        uuid: extensionUUID,
-                        email: email  // Send email to backend
-                    }),
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) throw new Error(data.error || 'Failed to initiate payment');
-                if (data.code === 'ALREADY_PREMIUM') { showSuccess(); return; }
-
-                openRazorpayCheckout(data.subscription_id, data.razorpay_key, email);
-            } catch (error) {
-                showError(error.message || 'Payment failed. Please try again.');
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        function openRazorpayCheckout(subscriptionId, razorpayKey, email) {
-            const rzp = new Razorpay({
-                key: razorpayKey,
-                subscription_id: subscriptionId,
-                name: 'JobArmor',
-                description: 'Pro Monthly Subscription',
-                prefill: {
-                    email: email  // Pre-fill email in Razorpay
-                },
-                handler: () => showSuccess(),
-                theme: { color: '#10B981' },
-                notes: { extension_uuid: extensionUUID },
-            });
-            rzp.on('payment.failed', (res) => showError('Payment failed: ' + res.error.description));
-            rzp.open();
-        }
-
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function setLoading(loading) {
-            payBtn.disabled = loading;
-            btnText.textContent = loading ? 'Processing...' : 'Subscribe Now';
-            btnLoader.classList.toggle('hidden', !loading);
-        }
-
-        function showError(msg) {
-            errorText.textContent = msg;
-            errorMessage.classList.remove('hidden');
-        }
-
-        function hideError() {
-            errorMessage.classList.add('hidden');
-        }
-
-        function showSuccess() {
-            pricingCard.classList.add('hidden');
-            successCard.classList.remove('hidden');
-        }
-
-        // Cursor Glow Trail
-        const cursorGlow = document.getElementById('cursor-glow');
-        document.addEventListener('mousemove', (e) => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
+      // Magnetic Buttons (exclude pay button)
+      document.querySelectorAll(".btn-primary:not(#pay-btn)").forEach((btn) => {
+        btn.addEventListener("mousemove", (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
         });
-
-        // Dot Pattern Parallax
-        const dotPattern = document.getElementById('dot-pattern');
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            dotPattern.style.backgroundPosition = `${x}px ${y}px`;
+        btn.addEventListener("mouseleave", () => {
+          btn.style.transform = "translate(0, 0)";
         });
-
-        // Card Tilt Effect (exclude pricing card)
-        document.querySelectorAll('.glass-card:not(nav):not(#pricing-card):not(#error-no-uuid):not(#success-card)').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 25;
-                const rotateY = (centerX - x) / 25;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-            });
-        });
-
-        // Magnetic Buttons (exclude pay button)
-        document.querySelectorAll('.btn-primary:not(#pay-btn)').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0, 0)';
-            });
-        });
+      });
     </script>
-
-</body>
-
+  </body>
 </html>
